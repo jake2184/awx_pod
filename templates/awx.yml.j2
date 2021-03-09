@@ -77,6 +77,11 @@ spec:
       path: {{ awx_podman_dir }}/awxweb_key.pem
       type: File
 {% endif %}
+{% for mount in awx_extra_mounts|default([]) %}
+  - name: {{ mount.name }}
+    hostPath:
+      path: {{ mount.path }}
+{% endfor %}
   containers:
 {% if awx_pg_hostname == "localhost" %}
   #
@@ -171,6 +176,11 @@ spec:
       name: ssl_certificate_key
       readOnly: true
 {% endif %}
+{% for mount in awx_extra_mounts|default([]) %}
+    - mountPath: {{ mount.mountPath | default(mount.path) }}
+      name: {{ mount.name }}
+      readOnly: true
+{% endfor %}
     ports:
       - containerPort: 8052
         hostPort: {{ awx_host_port }}
@@ -204,6 +214,10 @@ spec:
       value: {{ awx_pg_port }}
     - name: DATABASE_HOST
       value: {{ awx_pg_hostname }}
+{% for env in awx_extra_env|default([]) %}
+    - name: {{ env.name }}
+      value: {{ env.value }}
+{% endfor %}
     image: {{ awx_awxtask_image }}
     name: {{ awx_pod_name }}_awxtask
     workingDir: /var/lib/awx
@@ -250,6 +264,11 @@ spec:
       name: ssl_certificate_key
       readOnly: true
 {% endif %}
+{% for mount in awx_extra_mounts|default([]) %}
+    - mountPath: {{ mount.mountPath | default(mount.path) }}
+      name: {{ mount.name }}
+      readOnly: true
+{% endfor %}
   #
   # redis container
   #

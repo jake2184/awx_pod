@@ -7,7 +7,7 @@
 
 - name: Generate broadcast websocket secret
   set_fact:
-    broadcast_websocket_secret: "{{ lookup('password', '/dev/null', length=128) }}"
+    broadcast_websocket_secret: "{{ awx_broadcast_websocket_secret | default(lookup('password', '/dev/null', length=128)) }}"
   run_once: true
   no_log: true
 
@@ -151,6 +151,7 @@
     container_pod_yaml: "{{ awx_pod_yaml_path }}"
     container_image_list: "{{ awx_container_image_list }}"
     container_firewall_ports: "{{ _container_firewall_ports }}"
+    service_name: "{{ awx_pod_name }}-container-pod.service"
   import_role:
     name: podman_container_systemd
 
