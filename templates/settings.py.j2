@@ -83,3 +83,6 @@ REDHAT_CANDLEPIN_HOST = "{{ candlepin_host  | default('') }}"
 REDHAT_CANDLEPIN_VERIFY = "{{ candlepin_verify | default('') }}"
 BROADCAST_WEBSOCKET_PORT = 8052
 BROADCAST_WEBSOCKET_PROTOCOL = 'http'
+{% for setting, value in awx_django_settings.items() %}
+{{ setting | upper }} = {{ value }}
+{% endfor %}

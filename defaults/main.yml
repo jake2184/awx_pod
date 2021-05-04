@@ -62,3 +62,4 @@ awx_automation_analytics_url: "https://example.org"
 awx_insights_url_base: "https://example.org"
 awx_insights_agent_mime: "application/example"
 awx_container_groups_image: "ansible/ansible-runner"
+awx_django_settings: {}
